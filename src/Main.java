@@ -1,4 +1,9 @@
 // Main.java
+import Family.FamilyManager;
+import Family.FileHandler;
+import Family.FileOperations;
+import GenealogicalTree.GenealogicalTree;
+
 import java.util.Arrays;
 import java.util.List;
 

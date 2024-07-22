@@ -1,4 +1,8 @@
-// FamilyManager.java
+package Family;// Family.FamilyManager.java
+import GenealogicalTree.GenealogicalTree;
+import Human.Gender;
+import Human.Person;
+
 import java.io.IOException;
 import java.util.List;
 
