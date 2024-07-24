@@ -1,10 +1,15 @@
 package GenealogicalTree;
+
 import Human.Person;
+import Sorting.Sort;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenealogicalTree {
+public class GenealogicalTree implements Serializable {
     private Map<String, Person> people;
 
     public GenealogicalTree() {
@@ -41,15 +46,6 @@ public class GenealogicalTree {
         person2.setSpouse(person1);
     }
 
-    public List<Person> getChildren(String personFullName) {
-        Person person = people.get(personFullName);
-        if (person == null) {
-            throw new IllegalArgumentException("Человек с именем " + personFullName + " не найден.");
-        }
-
-        return person.getChildren();
-    }
-
     public Person getPerson(String personFullName) {
         Person person = people.get(personFullName);
         if (person == null) {
@@ -57,5 +53,57 @@ public class GenealogicalTree {
         }
 
         return person;
+    }
+
+    public List<Person> getAllPeople() {
+        return new ArrayList<>(people.values());
+    }
+
+    public List<Person> getPeopleSortedByAge() {
+        List<Person> sortedList = getAllPeople();
+        Sort.sortByAge(sortedList);
+        return sortedList;
+    }
+
+    public List<Person> getPeopleSortedByName() {
+        List<Person> sortedList = getAllPeople();
+        Sort.sortByName(sortedList);
+        return sortedList;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Генеалогическое Дерево:\n");
+
+        for (Person person : people.values()) {
+            sb.append(person.getFullName()).append(" (")
+                    .append(person.getGender().name()).append(" ")
+                    .append(person.getBirthdate()).append(")");
+
+
+            Person spouse = person.getSpouse();
+            if (spouse != null) {
+                sb.append(" и Супруг/Супруга ")
+                        .append(spouse.getFullName());
+            }
+
+
+            List<Person> children = person.getChildren();
+            if (!children.isEmpty()) {
+                sb.append(" Дети: ");
+                for (Person child : children) {
+                    sb.append(child.getFullName())
+                            .append(" (Возраст: ").append(child.getAge())
+                            .append(", Пол: ").append(child.getGender().name())
+                            .append("), ");
+                }
+                sb.setLength(sb.length() - 2);
+            }
+
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }

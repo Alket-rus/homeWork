@@ -1,16 +1,33 @@
-package Family;// Family.FileHandler.java
+package Family;
+
 import java.io.*;
-import java.nio.file.*;
 
 public class FileHandler implements FileOperations {
+    private String filePath;
 
     @Override
-    public void appendToFile(String filename, String data) throws IOException {
-        Files.write(Paths.get(filename), data.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    public boolean save(Serializable serializable) {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            objectOutputStream.writeObject(serializable);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public String readFromFile(String filename) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filename)));
+    public Object read() {
+        try (ObjectInputStream  objectInputStream = new ObjectInputStream(new FileInputStream(filePath))){
+            return objectInputStream.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void setPath(String filePath) {
+        this.filePath = filePath;
     }
 }

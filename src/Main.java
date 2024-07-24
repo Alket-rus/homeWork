@@ -1,44 +1,37 @@
-// Main.java
 import Family.FamilyManager;
+import Family.FileManager;
 import Family.FileHandler;
 import Family.FileOperations;
 import GenealogicalTree.GenealogicalTree;
+import Human.Person;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) {
         GenealogicalTree tree = new GenealogicalTree();
         FileOperations fileHandler = new FileHandler();
         FamilyManager familyManager = new FamilyManager(tree, fileHandler);
 
-
         familyManager.createPeople();
-
-
         familyManager.establishRelationships();
-
-
         familyManager.establishMarriages();
-
-
         familyManager.addNewFamilies();
 
+        //FileManager.save(tree);
+        //FileManager.load();
+        //System.out.print(tree);
+        // Вывод информации о семье
+        //familyManager.printFamilyInfo();
 
-        List<String> people = Arrays.asList(
-                "Смирнов Пётр Иванович",
-                "Смирнова Анна Петровна",
-                "Смирнов Николай Иванович",
-                "Петров Сергей Дмитриевич",
-                "Сидоров Иван Александрович"
-        );
+        System.out.println("Сортировка по возрасту:");
+        for (Person person : tree.getPeopleSortedByAge()) {
+            System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")");
+        }
 
-
-        familyManager.writeFamiliesToFile(people, "families.txt");
-
-
-        familyManager.readFamiliesFromFile("families.txt");
+        System.out.println("Сортировка по имени:");
+        for (Person person : tree.getPeopleSortedByName()) {
+            System.out.println(person.getFullName());
+        }
     }
 }
+

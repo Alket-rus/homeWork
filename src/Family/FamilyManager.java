@@ -1,9 +1,9 @@
-package Family;// Family.FamilyManager.java
+package Family;
+
 import GenealogicalTree.GenealogicalTree;
 import Human.Gender;
 import Human.Person;
 
-import java.io.IOException;
 import java.util.List;
 
 public class FamilyManager {
@@ -17,7 +17,6 @@ public class FamilyManager {
     }
 
     public void createPeople() {
-
         Person peter = new Person("Пётр", "Иванович", "Смирнов", "1970-01-01", Gender.Мужской);
         Person evgenia = new Person("Евгения", "Сергеевна", "Смирнова", "1975-02-02", Gender.Женский);
         Person anna = new Person("Анна", "Петровна", "Смирнова", "2000-03-03", Gender.Женский);
@@ -40,7 +39,6 @@ public class FamilyManager {
     }
 
     public void establishRelationships() {
-
         tree.addRelationship("Смирнов Пётр Иванович", "Смирнова Анна Петровна");
         tree.addRelationship("Смирнова Евгения Сергеевна", "Смирнова Анна Петровна");
         tree.addRelationship("Смирнова Евгения Сергеевна", "Смирнова Алиса Евгеньевна");
@@ -49,14 +47,12 @@ public class FamilyManager {
     }
 
     public void establishMarriages() {
-
         tree.addMarriage("Смирнов Пётр Иванович", "Смирнова Евгения Сергеевна");
         tree.addMarriage("Смирнова Анна Петровна", "Смирнов Андрей Владимирович");
         tree.addMarriage("Смирнов Николай Иванович", "Смирнова Мария Алексеевна");
     }
 
     public void addNewFamilies() {
-
         Person sergey = new Person("Сергей", "Дмитриевич", "Петров", "1965-08-08", Gender.Мужской);
         Person olga = new Person("Ольга", "Васильевна", "Петрова", "1970-07-07", Gender.Женский);
         Person tatiana = new Person("Татьяна", "Сергеевна", "Петрова", "1995-06-06", Gender.Женский);
@@ -92,23 +88,17 @@ public class FamilyManager {
         tree.addMarriage("Сидоров Иван Александрович", "Сидорова Наталья Игоревна");
     }
 
-    public void writeFamiliesToFile(List<String> people, String filename) {
-        StringBuilder sb = new StringBuilder();
-
+    public void printFamilyInfo() {
+        List<String> people = List.of(
+                "Смирнов Пётр Иванович",
+                "Смирнова Анна Петровна",
+                "Смирнов Николай Иванович",
+                "Петров Сергей Дмитриевич",
+                "Сидоров Иван Александрович"
+        );
 
         for (String personFullName : people) {
-            String familyInfo = getFamilyInfo(personFullName);
-            if (!familyInfo.isEmpty()) {
-                sb.append(familyInfo).append("\n");
-            }
-        }
-
-
-        try {
-            fileHandler.appendToFile(filename, sb.toString());
-            System.out.println("Data appended to file " + filename);
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(getFamilyInfo(personFullName));
         }
     }
 
@@ -119,14 +109,12 @@ public class FamilyManager {
         Person spouse = parent.getSpouse();
         List<Person> children = parent.getChildren();
 
-
         StringBuilder sb = new StringBuilder();
         sb.append(parentFullName);
         if (spouse != null) {
             sb.append(" и ").append(getSpouseTitle(spouse));
         }
         sb.append(" Дети: ");
-
 
         String childrenNames = children.stream()
                 .map(child -> String.format("%s (Возраст: %d, Пол: %s)",
@@ -143,19 +131,6 @@ public class FamilyManager {
             return "Супруг " + spouse.getFullName();
         } else {
             return "Супруга " + spouse.getFullName();
-        }
-    }
-
-    public void readFamiliesFromFile(String filename) {
-        try {
-            String data = fileHandler.readFromFile(filename);
-            String[] lines = data.split("\n");
-
-            for (String line : lines) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
