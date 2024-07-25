@@ -23,7 +23,12 @@ public class Main {
         // Вывод информации о семье
         //familyManager.printFamilyInfo();
 
-        System.out.println("Сортировка по возрасту:");
+        // Пример использования итерабала
+        for (Person person : tree.getPeopleSortedByAge()) {
+            System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")");
+            }
+
+        /*    System.out.println("Сортировка по возрасту:");
         for (Person person : tree.getPeopleSortedByAge()) {
             System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")");
         }
@@ -31,7 +36,8 @@ public class Main {
         System.out.println("Сортировка по имени:");
         for (Person person : tree.getPeopleSortedByName()) {
             System.out.println(person.getFullName());
-        }
+        */
     }
 }
+
 

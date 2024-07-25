@@ -4,12 +4,9 @@ import Human.Person;
 import Sorting.Sort;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class GenealogicalTree implements Serializable {
+public class GenealogicalTree implements Serializable, Iterable<Person> {
     private Map<String, Person> people;
 
     public GenealogicalTree() {
@@ -49,7 +46,7 @@ public class GenealogicalTree implements Serializable {
     public Person getPerson(String personFullName) {
         Person person = people.get(personFullName);
         if (person == null) {
-            throw new IllegalArgumentException("Человек с именем " + personFullName + " не найден.");
+            throw new IllegalArgumentException("Человек с именем " + person.getFullName() + " не найден.");
         }
 
         return person;
@@ -78,7 +75,7 @@ public class GenealogicalTree implements Serializable {
 
         for (Person person : people.values()) {
             sb.append(person.getFullName()).append(" (")
-                    .append(person.getGender().name()).append(" ")
+                    .append(person.getGender()).append(" ")
                     .append(person.getBirthdate()).append(")");
 
 
@@ -95,15 +92,20 @@ public class GenealogicalTree implements Serializable {
                 for (Person child : children) {
                     sb.append(child.getFullName())
                             .append(" (Возраст: ").append(child.getAge())
-                            .append(", Пол: ").append(child.getGender().name())
+                            .append(", Пол: ").append(child.getGender())
                             .append("), ");
                 }
-                sb.setLength(sb.length() - 2);
+                sb.setLength(sb.length() - 2);  // Убираем последнюю запятую и пробел
             }
 
             sb.append("\n");
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<Person> iterator() {
+        return new GenealogicalTreeIterator(people);
     }
 }
