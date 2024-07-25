@@ -24,7 +24,7 @@ public class Main {
         //familyManager.printFamilyInfo();
 
         // Пример использования итерабала
-        for (Person person : tree {
+        for (Person person : tree) {
             System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")");
             }
 
