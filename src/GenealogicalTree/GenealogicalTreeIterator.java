@@ -1,14 +1,13 @@
 package GenealogicalTree;
 
-import Human.Person;
 import java.util.Iterator;
 import java.util.Map;
 
-public class GenealogicalTreeIterator implements Iterator<Person> {
-    private Iterator<Person> iterator;
+public class GenealogicalTreeIterator<T> implements Iterator<T> {
+    private final Iterator<T> iterator;
 
-    public GenealogicalTreeIterator(Map<String, Person> people) {
-        this.iterator = people.values().iterator();
+    public GenealogicalTreeIterator(Map<String, T> entities) {
+        this.iterator = entities.values().iterator();
     }
 
     @Override
@@ -17,7 +16,7 @@ public class GenealogicalTreeIterator implements Iterator<Person> {
     }
 
     @Override
-    public Person next() {
+    public T next() {
         return iterator.next();
     }
 }

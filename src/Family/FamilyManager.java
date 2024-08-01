@@ -1,31 +1,31 @@
 package Family;
 
 import GenealogicalTree.GenealogicalTree;
-import Human.Gender;
 import Human.Person;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class FamilyManager {
 
-    private final GenealogicalTree tree;
+    private final GenealogicalTree<Person> tree;
     private final FileOperations fileHandler;
 
-    public FamilyManager(GenealogicalTree tree, FileOperations fileHandler) {
+    public FamilyManager(GenealogicalTree<Person> tree, FileOperations fileHandler) {
         this.tree = tree;
         this.fileHandler = fileHandler;
     }
 
     public void createPeople() {
-        Person peter = new Person("Пётр", "Иванович", "Смирнов", "1970-01-01", Gender.Мужской);
-        Person evgenia = new Person("Евгения", "Сергеевна", "Смирнова", "1975-02-02", Gender.Женский);
-        Person anna = new Person("Анна", "Петровна", "Смирнова", "2000-03-03", Gender.Женский);
-        Person nikolay = new Person("Николай", "Иванович", "Смирнов", "2005-04-04", Gender.Мужской);
-        Person alice = new Person("Алиса", "Евгеньевна", "Смирнова", "2007-05-05", Gender.Женский);
-        Person ivan = new Person("Иван", "Андреевич", "Смирнов", "2010-06-06", Gender.Мужской);
-        Person alexey = new Person("Алексей", "Николаевич", "Смирнов", "2012-07-07", Gender.Мужской);
-        Person maria = new Person("Мария", "Алексеевна", "Смирнова", "1978-09-09", Gender.Женский);
-        Person andrey = new Person("Андрей", "Владимирович", "Смирнов", "1973-11-11", Gender.Мужской);
+        Person peter = new Person("Пётр", "Иванович", "Смирнов", LocalDate.of(1970, 1, 1), Gender.Мужской);
+        Person evgenia = new Person("Евгения", "Сергеевна", "Смирнова", LocalDate.of(1975, 2, 2), Gender.Женский);
+        Person anna = new Person("Анна", "Петровна", "Смирнова", LocalDate.of(2000, 3, 3), Gender.Женский);
+        Person nikolay = new Person("Николай", "Иванович", "Смирнов", LocalDate.of(2005, 4, 4), Gender.Мужской);
+        Person alice = new Person("Алиса", "Евгеньевна", "Смирнова", LocalDate.of(2007, 5, 5), Gender.Женский);
+        Person ivan = new Person("Иван", "Андреевич", "Смирнов", LocalDate.of(2010, 6, 6), Gender.Мужской);
+        Person alexey = new Person("Алексей", "Николаевич", "Смирнов", LocalDate.of(2012, 7, 7), Gender.Мужской);
+        Person maria = new Person("Мария", "Алексеевна", "Смирнова", LocalDate.of(1978, 9, 9), Gender.Женский);
+        Person andrey = new Person("Андрей", "Владимирович", "Смирнов", LocalDate.of(1973, 11, 11), Gender.Мужской);
 
         tree.addPerson(peter);
         tree.addPerson(evgenia);
@@ -53,10 +53,10 @@ public class FamilyManager {
     }
 
     public void addNewFamilies() {
-        Person sergey = new Person("Сергей", "Дмитриевич", "Петров", "1965-08-08", Gender.Мужской);
-        Person olga = new Person("Ольга", "Васильевна", "Петрова", "1970-07-07", Gender.Женский);
-        Person tatiana = new Person("Татьяна", "Сергеевна", "Петрова", "1995-06-06", Gender.Женский);
-        Person dmitry = new Person("Дмитрий", "Сергеевич", "Петров", "2000-05-05", Gender.Мужской);
+        Person sergey = new Person("Сергей", "Дмитриевич", "Петров", LocalDate.of(1965, 8, 8), Gender.Мужской);
+        Person olga = new Person("Ольга", "Васильевна", "Петрова", LocalDate.of(1970, 7, 7), Gender.Женский);
+        Person tatiana = new Person("Татьяна", "Сергеевна", "Петрова", LocalDate.of(1995, 6, 6), Gender.Женский);
+        Person dmitry = new Person("Дмитрий", "Сергеевич", "Петров", LocalDate.of(2000, 5, 5), Gender.Мужской);
 
         tree.addPerson(sergey);
         tree.addPerson(olga);
@@ -70,10 +70,10 @@ public class FamilyManager {
 
         tree.addMarriage("Петров Сергей Дмитриевич", "Петрова Ольга Васильевна");
 
-        Person ivanS = new Person("Иван", "Александрович", "Сидоров", "1980-03-15", Gender.Мужской);
-        Person natalia = new Person("Наталья", "Игоревна", "Сидорова", "1983-11-12", Gender.Женский);
-        Person viktor = new Person("Виктор", "Иванович", "Сидоров", "2005-01-01", Gender.Мужской);
-        Person elena = new Person("Елена", "Ивановна", "Сидорова", "2007-02-02", Gender.Женский);
+        Person ivanS = new Person("Иван", "Александрович", "Сидоров", LocalDate.of(1980, 3, 15), Gender.Мужской);
+        Person natalia = new Person("Наталья", "Игоревна", "Сидорова", LocalDate.of(1983, 11, 12), Gender.Женский);
+        Person viktor = new Person("Виктор", "Иванович", "Сидоров", LocalDate.of(2005, 1, 1), Gender.Мужской);
+        Person elena = new Person("Елена", "Ивановна", "Сидорова", LocalDate.of(2007, 2, 2), Gender.Женский);
 
         tree.addPerson(ivanS);
         tree.addPerson(natalia);
@@ -98,12 +98,19 @@ public class FamilyManager {
         );
 
         for (String personFullName : people) {
-            System.out.println(getFamilyInfo(personFullName));
+            Person person = (Person) tree.getPerson(personFullName);
+            if (person != null) {
+                System.out.println("Найден человек: " + person.getFullName());
+                System.out.println(getFamilyInfo(personFullName));
+            } else {
+                System.out.println("Не найден человек: " + personFullName);
+            }
         }
     }
 
+
     private String getFamilyInfo(String parentFullName) {
-        Person parent = tree.getPerson(parentFullName);
+        Person parent = (Person) tree.getPerson(parentFullName);
         if (parent == null) return "";
 
         Person spouse = parent.getSpouse();

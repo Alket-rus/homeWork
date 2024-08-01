@@ -1,43 +1,36 @@
-import Family.FamilyManager;
-import Family.FileManager;
-import Family.FileHandler;
-import Family.FileOperations;
 import GenealogicalTree.GenealogicalTree;
+import Family.FamilyManager;
+import Family.FileOperations;
+import Family.FileOperationsImpl;
 import Human.Person;
-
 
 public class Main {
     public static void main(String[] args) {
-        GenealogicalTree tree = new GenealogicalTree();
-        FileOperations fileHandler = new FileHandler();
-        FamilyManager familyManager = new FamilyManager(tree, fileHandler);
+        GenealogicalTree<Person> personTree = new GenealogicalTree<>();
+        FileOperations fileOperations = new FileOperationsImpl();
+        FamilyManager personManager = new FamilyManager(personTree, fileOperations);
 
-        familyManager.createPeople();
-        familyManager.establishRelationships();
-        familyManager.establishMarriages();
-        familyManager.addNewFamilies();
+        // Создайте людей и установите отношения
+        personManager.createPeople();
+        personManager.establishRelationships();
+        personManager.establishMarriages();
 
-        //FileManager.save(tree);
-        //FileManager.load();
-        //System.out.print(tree);
-        // Вывод информации о семье
-        //familyManager.printFamilyInfo();
+        // Добавьте новые семьи
+        personManager.addNewFamilies();
 
-        // Пример использования итерабала
-        for (Person person : tree) {
-            System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")");
-            }
+        // Распечатайте информацию о семьях
+        personManager.printFamilyInfo();
 
-        /*    System.out.println("Сортировка по возрасту:");
-        for (Person person : tree.getPeopleSortedByAge()) {
-            System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")");
-        }
+        // Печать людей, отсортированных по возрасту
+        System.out.println("Люди, отсортированные по возрасту:");
+        personTree.getPeopleSortedByAge().forEach(person ->
+                System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")")
+        );
 
-        System.out.println("Сортировка по имени:");
-        for (Person person : tree.getPeopleSortedByName()) {
-            System.out.println(person.getFullName());
-        */
+        // Печать людей, отсортированных по имени
+        System.out.println("Люди, отсортированные по имени:");
+        personTree.getPeopleSortedByName().forEach(person ->
+                System.out.println(person.getFullName())
+        );
     }
 }
-
-

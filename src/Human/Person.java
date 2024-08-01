@@ -1,20 +1,24 @@
 package Human;
 
-import java.io.Serializable;
+import Family.Gender;
+import GenealogicalTree.TreeManager;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Person implements Serializable {
+public class Person implements TreeManager<Person> {
     private String firstName;
     private String lastName;
     private String patronymic;
-    private String birthdate;
+    private LocalDate birthdate;
     private Gender gender;
     private Person spouse;
     private List<Person> children;
     private List<Person> parents;
 
-    public Person(String firstName, String patronymic, String lastName, String birthdate, Gender gender) {
+    public Person(String firstName, String patronymic, String lastName, LocalDate birthdate, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.patronymic = patronymic;
@@ -24,49 +28,55 @@ public class Person implements Serializable {
         this.parents = new ArrayList<>();
     }
 
+    @Override
     public String getFullName() {
         return lastName + " " + firstName + " " + patronymic;
     }
 
-    public String getBirthdate() {
+    @Override
+    public LocalDate getBirthDate() {
         return birthdate;
     }
 
+    @Override
     public Gender getGender() {
         return gender;
     }
 
+    @Override
     public void setSpouse(Person spouse) {
         this.spouse = spouse;
     }
 
+    @Override
     public Person getSpouse() {
         return spouse;
     }
 
+    @Override
     public void addChild(Person child) {
         this.children.add(child);
-        child.addParent(this); // Автоматически добавляем родителя
+        child.addParent(this);
     }
 
+    @Override
     public List<Person> getChildren() {
         return children;
     }
 
+    @Override
     public void addParent(Person parent) {
         this.parents.add(parent);
     }
 
+    @Override
     public List<Person> getParents() {
         return parents;
     }
 
+    @Override
     public int getAge() {
-        // Предполагается, что дата рождения в формате "yyyy-MM-dd"
-        String[] birthdateParts = birthdate.split("-");
-        int birthYear = Integer.parseInt(birthdateParts[0]);
-        int currentYear = java.time.LocalDate.now().getYear();
-        return currentYear - birthYear;
+        return (int) ChronoUnit.YEARS.between(birthdate, LocalDate.now());
     }
 
     @Override

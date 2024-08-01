@@ -1,4 +1,4 @@
-package Human;
+package Family;
 
 public enum Gender {
     Мужской,
