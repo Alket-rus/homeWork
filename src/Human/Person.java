@@ -1,14 +1,15 @@
 package Human;
 
 import Family.Gender;
-import GenealogicalTree.TreeManager;
+import GenealogicalTree.TreeElement;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Person implements TreeManager<Person> {
+public class Person implements TreeElement<Person> {
+
     private String firstName;
     private String lastName;
     private String patronymic;
@@ -44,19 +45,8 @@ public class Person implements TreeManager<Person> {
     }
 
     @Override
-    public void setSpouse(Person spouse) {
-        this.spouse = spouse;
-    }
-
-    @Override
     public Person getSpouse() {
         return spouse;
-    }
-
-    @Override
-    public void addChild(Person child) {
-        this.children.add(child);
-        child.addParent(this);
     }
 
     @Override
@@ -70,6 +60,11 @@ public class Person implements TreeManager<Person> {
     }
 
     @Override
+    public void setSpouse(Person spouse) {
+        this.spouse = spouse;
+    }
+
+    @Override
     public List<Person> getParents() {
         return parents;
     }
@@ -77,6 +72,12 @@ public class Person implements TreeManager<Person> {
     @Override
     public int getAge() {
         return (int) ChronoUnit.YEARS.between(birthdate, LocalDate.now());
+    }
+
+    @Override
+    public void addChild(Person child) {
+        this.children.add(child);
+        child.addParent(this);
     }
 
     @Override

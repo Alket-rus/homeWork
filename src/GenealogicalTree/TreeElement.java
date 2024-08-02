@@ -1,31 +1,20 @@
 package GenealogicalTree;
 
 import Family.Gender;
-import Human.Person;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface TreeManager<T> extends Serializable {
-
+public interface TreeElement<T extends TreeElement<T>> extends Serializable {
     String getFullName();
-
     LocalDate getBirthDate();
-
     Gender getGender();
-
     T getSpouse();
-
-    void setSpouse(T spouse);
-
     List<T> getChildren();
-
-    void addChild(T child);
-
-    void addParent(Person parent);
-
-    List<Person> getParents();
-
+    void addParent(T parent);
+    void setSpouse(T spouse);
+    List<T> getParents();
     int getAge();
+    void addChild(T child);
 }

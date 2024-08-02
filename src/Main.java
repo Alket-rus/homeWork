@@ -1,36 +1,40 @@
 import GenealogicalTree.GenealogicalTree;
+import Family.FileHandler;
+import Family.FileManager;
 import Family.FamilyManager;
-import Family.FileOperations;
-import Family.FileOperationsImpl;
-import Human.Person;
+import GenealogicalTree.TreeElement;
 
 public class Main {
     public static void main(String[] args) {
-        GenealogicalTree<Person> personTree = new GenealogicalTree<>();
-        FileOperations fileOperations = new FileOperationsImpl();
-        FamilyManager personManager = new FamilyManager(personTree, fileOperations);
+        GenealogicalTree tree = FileManager.load();
+        if (tree == null) {
+            tree = new GenealogicalTree();
+        }
+        FileHandler fileHandler = new FileHandler("src/GenealogicalTree/tree.txt");
 
+        FamilyManager familyManager = new FamilyManager(tree, fileHandler);
 
-        personManager.createPeople();
-        personManager.establishRelationships();
-        personManager.establishMarriages();
-
-
-        personManager.addNewFamilies();
-
-
-        personManager.printFamilyInfo();
-
-
+        familyManager.createPeople();
+        familyManager.establishRelationships();
+        familyManager.establishMarriages();
+        familyManager.addNewFamilies();
+        familyManager.printFamilyInfo();
+        FileManager.saveAndLoad();
         System.out.println("Люди, отсортированные по возрасту:");
-        personTree.getPeopleSortedByAge().forEach(person ->
-                System.out.println(person.getFullName() + " (Возраст: " + person.getAge() + ")")
-        );
-
+        for (Object o : tree.getPeopleSortedByAge()) {
+            if (o instanceof TreeElement) {
+                TreeElement p = (TreeElement) o;
+                System.out.println(p.getFullName() + " - " + p.getAge());
+            }
+        }
 
         System.out.println("Люди, отсортированные по имени:");
-        personTree.getPeopleSortedByName().forEach(person ->
-                System.out.println(person.getFullName())
-        );
+        for (Object o : tree.getPeopleSortedByName()) {
+            if (o instanceof TreeElement) {
+                TreeElement p = (TreeElement) o;
+                System.out.println(p.getFullName());
+            }
+        }
+
     }
 }

@@ -6,29 +6,27 @@ import java.io.Serializable;
 
 public class FileManager {
     final static String filePath = "src/GenealogicalTree/tree.txt";
-    GenealogicalTree tree = load();
-
+    private static FileOperations fileHandler = new FileHandler(filePath);
 
     public static void saveAndLoad() {
-        GenealogicalTree tree = load();
+        GenealogicalTree tree = new GenealogicalTree(); // Создаем новый объект для теста
         save(tree);
-        System.out.println(tree);
+        System.out.println("Дерево сохранено: " + tree);
+
+        // Попробуем загрузить объект
+        GenealogicalTree loadedTree = load();
+        if (loadedTree != null) {
+            System.out.println("Дерево загружено: " + loadedTree);
+        } else {
+            System.out.println("Не удалось загрузить дерево.");
+        }
     }
 
-
     public static GenealogicalTree load() {
-        FileOperations fileHandler = new FileHandler();
-        fileHandler.setPath(filePath);
         return (GenealogicalTree) fileHandler.read();
     }
 
     public static void save(GenealogicalTree genealogicalTree) {
-        FileOperations fileHandler = new FileHandler();
-        fileHandler.setPath(filePath);
         fileHandler.save((Serializable) genealogicalTree);
-
     }
-
-
 }
-

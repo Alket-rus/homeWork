@@ -1,13 +1,13 @@
 package GenealogicalTree;
 
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
-public class GenealogicalTreeIterator<T> implements Iterator<T> {
+public class GenealogicalTreeIterator<T extends TreeElement<T>> implements Iterator<T> {
     private final Iterator<T> iterator;
 
-    public GenealogicalTreeIterator(Map<String, T> entities) {
-        this.iterator = entities.values().iterator();
+    public GenealogicalTreeIterator(List<T> entities) {
+        this.iterator = entities.iterator();
     }
 
     @Override
@@ -20,3 +20,4 @@ public class GenealogicalTreeIterator<T> implements Iterator<T> {
         return iterator.next();
     }
 }
+

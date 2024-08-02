@@ -2,16 +2,15 @@ package Family;
 
 import GenealogicalTree.GenealogicalTree;
 import Human.Person;
-
+import GenealogicalTree.TreeElement;
 import java.time.LocalDate;
 import java.util.List;
 
 public class FamilyManager {
-
-    private final GenealogicalTree<Person> tree;
+    private final GenealogicalTree tree;
     private final FileOperations fileHandler;
 
-    public FamilyManager(GenealogicalTree<Person> tree, FileOperations fileHandler) {
+    public FamilyManager(GenealogicalTree tree, FileOperations fileHandler) {
         this.tree = tree;
         this.fileHandler = fileHandler;
     }
@@ -98,22 +97,15 @@ public class FamilyManager {
         );
 
         for (String personFullName : people) {
-            Person person = (Person) tree.getPerson(personFullName);
-            if (person != null) {
-                System.out.println("Найден человек: " + person.getFullName());
-                System.out.println(getFamilyInfo(personFullName));
-            } else {
-                System.out.println("Не найден человек: " + personFullName);
-            }
+            System.out.println(getFamilyInfo(personFullName));
         }
     }
-
 
     private String getFamilyInfo(String parentFullName) {
         Person parent = (Person) tree.getPerson(parentFullName);
         if (parent == null) return "";
 
-        Person spouse = parent.getSpouse();
+        Person spouse = (Person) parent.getSpouse();
         List<Person> children = parent.getChildren();
 
         StringBuilder sb = new StringBuilder();

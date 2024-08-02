@@ -5,12 +5,17 @@ import java.io.*;
 public class FileHandler implements FileOperations {
     private String filePath;
 
+    public FileHandler(String filePath) {
+        this.filePath = filePath;
+    }
+
     @Override
-    public boolean save(Serializable serializable) {
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            objectOutputStream.writeObject(serializable);
+    public boolean save(Serializable obj) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(obj);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении объекта: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -18,9 +23,24 @@ public class FileHandler implements FileOperations {
 
     @Override
     public Object read() {
-        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(filePath))) {
-            return objectInputStream.readObject();
-        } catch (Exception e) {
+        File file = new File(filePath);
+        if (!file.exists() || file.length() == 0) {
+            System.err.println("Файл не существует или пуст.");
+            return null;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            return ois.readObject();
+        } catch (EOFException e) {
+            System.err.println("Достигнут неожиданный конец файла. Возможно, файл пуст или поврежден.");
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            System.err.println("Ошибка при чтении объекта: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        } catch (ClassNotFoundException e) {
+            System.err.println("Класс не найден при десериализации.");
             e.printStackTrace();
             return null;
         }
