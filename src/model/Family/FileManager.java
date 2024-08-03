@@ -1,11 +1,11 @@
-package Family;
+package model.Family;
 
-import GenealogicalTree.GenealogicalTree;
+import model.GenealogicalTree.GenealogicalTree;
 
 import java.io.Serializable;
 
 public class FileManager {
-    final static String filePath = "src/GenealogicalTree/tree.txt";
+    final static String filePath = "src/model.GenealogicalTree/tree.txt";
     private static FileOperations fileHandler = new FileHandler(filePath);
 
     public static void saveAndLoad() {

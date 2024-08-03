@@ -1,12 +1,18 @@
-package GenealogicalTree;
+package model.GenealogicalTree;
 
-import Family.Gender;
+import model.Family.Gender;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 public interface TreeElement<T extends TreeElement<T>> extends Serializable {
+    String getFirstName();
+
+    String getPatronymic();
+
+    String getLastName();
+
     String getFullName();
     LocalDate getBirthDate();
     Gender getGender();

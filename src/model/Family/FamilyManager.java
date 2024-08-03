@@ -1,16 +1,16 @@
-package Family;
+package model.Family;
 
-import GenealogicalTree.GenealogicalTree;
-import Human.Person;
-import GenealogicalTree.TreeElement;
+import model.GenealogicalTree.GenealogicalTree;
+import model.Human.Person;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class FamilyManager {
-    private final GenealogicalTree tree;
+    private final GenealogicalTree<Person> tree;
     private final FileOperations fileHandler;
 
-    public FamilyManager(GenealogicalTree tree, FileOperations fileHandler) {
+    public FamilyManager(GenealogicalTree<Person> tree, FileOperations fileHandler) {
         this.tree = tree;
         this.fileHandler = fileHandler;
     }

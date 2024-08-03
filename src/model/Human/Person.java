@@ -1,14 +1,16 @@
-package Human;
+package model.Human;
 
-import Family.Gender;
-import GenealogicalTree.TreeElement;
+import model.Family.Gender;
+import model.GenealogicalTree.TreeElement;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Person implements TreeElement<Person> {
+public class Person implements TreeElement<Person>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String firstName;
     private String lastName;
@@ -27,6 +29,21 @@ public class Person implements TreeElement<Person> {
         this.gender = gender;
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
+    }
+
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @Override
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package Family;
+package model.Family;
 
 public enum Gender {
     Мужской,

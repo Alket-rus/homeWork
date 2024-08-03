@@ -1,6 +1,6 @@
-package GenealogicalTree;
-import Human.Person;
+package model.GenealogicalTree;
 
+import model.Family.FileOperations;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GenealogicalTree<T extends TreeElement<T>> implements Iterable<T>, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private List<T> people;
 
     public GenealogicalTree() {
@@ -53,13 +55,13 @@ public class GenealogicalTree<T extends TreeElement<T>> implements Iterable<T>, 
     }
 
     public List<T> getPeopleSortedByAge() {
-        List<T> sortedList = getAllPeople();
+        List<T> sortedList = new ArrayList<>(people);
         sortedList.sort(Comparator.comparingInt(T::getAge));
         return sortedList;
     }
 
     public List<T> getPeopleSortedByName() {
-        List<T> sortedList = getAllPeople();
+        List<T> sortedList = new ArrayList<>(people);
         sortedList.sort(Comparator.comparing(T::getFullName));
         return sortedList;
     }
@@ -98,6 +100,9 @@ public class GenealogicalTree<T extends TreeElement<T>> implements Iterable<T>, 
         return sb.toString();
     }
 
+    public void saveTree(FileOperations fileOperations) {
+        fileOperations.save(this);
+    }
 
     @Override
     public Iterator<T> iterator() {
