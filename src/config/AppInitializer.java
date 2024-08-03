@@ -3,46 +3,47 @@ package config;
 import model.Family.FamilyManager;
 import model.GenealogicalTree.GenealogicalTree;
 import model.Human.Person;
-import model.Family.FileHandler;
-import model.Family.FileOperations;
+import model.Family.FileManager;
 import presenter.Presenter;
 import view.ConsoleUl;
 
-import static model.Family.FileManager.saveAndLoad;
+import static model.Family.FileManager.saveAndLoadTest;
 
 public class AppInitializer {
     private Presenter presenter;
     private ConsoleUl consoleUl;
     private FamilyManager familyManager;
     private GenealogicalTree<Person> tree;
-    private FileOperations fileOperations;
 
     public void initialize() {
-        fileOperations = new FileHandler("family_tree.dat");
-        tree = new GenealogicalTree<>();
-        familyManager = new FamilyManager(tree, fileOperations);
-
-        familyManager.createPeople();
-        familyManager.establishRelationships();
-        familyManager.establishMarriages();
-        familyManager.addNewFamilies();
-        saveAndLoad();
-        consoleUl = new ConsoleUl(null);
-        presenter = new Presenter(consoleUl, tree);
-        consoleUl.setPresenter(presenter);
-
-        if (tree.getAllPeople().isEmpty()) {
-            tree.saveTree(fileOperations);
-        } else {
-            familyManager.printFamilyInfo();
+        tree = FileManager.load();
+        if (tree == null) {
+            tree = new GenealogicalTree<>();
         }
 
+        familyManager = new FamilyManager(tree, null); // FileOperations не требуется
+
+        // Создание и обновление данных, если данные не загружены
+        if (tree.getAllPeople().isEmpty()) {
+            familyManager.createPeople();
+            familyManager.establishRelationships();
+            familyManager.establishMarriages();
+            familyManager.addNewFamilies();
+        }
+        consoleUl = new ConsoleUl(null); // Объект ConsoleUl создается без Presenter
+        presenter = new Presenter(consoleUl, tree); // Передаем консольный интерфейс в Presenter
+        consoleUl.setPresenter(presenter); // Устанавливаем Presenter в ConsoleUl
+
+        // Добавляем обработчик завершения работы программы
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveState));
+
+        familyManager.printFamilyInfo();
     }
 
     private void saveState() {
-        if (tree != null && fileOperations != null) {
-            tree.saveTree(fileOperations);
+        // Метод для сохранения состояния перед завершением работы программы
+        if (tree != null) {
+            FileManager.save(tree);
             System.out.println("State saved before exit.");
         }
     }

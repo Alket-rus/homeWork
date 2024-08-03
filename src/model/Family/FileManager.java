@@ -5,11 +5,11 @@ import model.GenealogicalTree.GenealogicalTree;
 import java.io.Serializable;
 
 public class FileManager {
-    final static String filePath = "src/model.GenealogicalTree/tree.txt";
-    private static FileOperations fileHandler = new FileHandler(filePath);
+    private static final String FILE_PATH = "src/model/GenealogicalTree/tree.txt";
+    private static final FileOperations fileHandler = new FileHandler(FILE_PATH);
 
-    public static void saveAndLoad() {
-        GenealogicalTree tree = new GenealogicalTree(); // Создаем новый объект для теста
+    public static void saveAndLoadTest() {
+        GenealogicalTree tree = new GenealogicalTree();
         save(tree);
         System.out.println("Дерево сохранено: " + tree);
 
