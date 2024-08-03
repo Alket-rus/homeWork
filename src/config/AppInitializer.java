@@ -21,30 +21,28 @@ public class AppInitializer {
             tree = new GenealogicalTree<>();
         }
 
-        familyManager = new FamilyManager(tree, null); // FileOperations не требуется
+        familyManager = new FamilyManager(tree, null);
 
-        // Создание и обновление данных, если данные не загружены
         if (tree.getAllPeople().isEmpty()) {
             familyManager.createPeople();
             familyManager.establishRelationships();
             familyManager.establishMarriages();
             familyManager.addNewFamilies();
         }
-        consoleUl = new ConsoleUl(null); // Объект ConsoleUl создается без Presenter
-        presenter = new Presenter(consoleUl, tree); // Передаем консольный интерфейс в Presenter
-        consoleUl.setPresenter(presenter); // Устанавливаем Presenter в ConsoleUl
+        consoleUl = new ConsoleUl(null);
+        presenter = new Presenter(consoleUl, tree);
+        consoleUl.setPresenter(presenter);
 
-        // Добавляем обработчик завершения работы программы
+
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveState));
 
         familyManager.printFamilyInfo();
     }
 
     private void saveState() {
-        // Метод для сохранения состояния перед завершением работы программы
         if (tree != null) {
             FileManager.save(tree);
-            System.out.println("State saved before exit.");
+            System.out.println("Состояние, сохраненное перед выходом программы.");
         }
     }
 

@@ -13,7 +13,6 @@ public class FileManager {
         save(tree);
         System.out.println("Дерево сохранено: " + tree);
 
-        // Попробуем загрузить объект
         GenealogicalTree loadedTree = load();
         if (loadedTree != null) {
             System.out.println("Дерево загружено: " + loadedTree);

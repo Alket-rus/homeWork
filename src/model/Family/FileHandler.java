@@ -12,7 +12,6 @@ public class FileHandler implements FileOperations {
     @Override
     public boolean save(Serializable obj) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            // Создаем директории, если их нет
             File file = new File(filePath);
             file.getParentFile().mkdirs();
 

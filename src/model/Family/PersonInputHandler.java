@@ -39,7 +39,6 @@ public class PersonInputHandler {
             throw new IllegalArgumentException("Неизвестный пол: " + genderInput);
         }
 
-        // Выбор супруга
         List<Person> people = presenter.getAllPeople();
         String spouseFullName = null;
         if (!people.isEmpty()) {
@@ -51,7 +50,6 @@ public class PersonInputHandler {
             }
         }
 
-        // Выбор родителей
         String parent1FullName = null;
         System.out.println("Выберите первого родителя из следующего списка (введите номер или 0 если нет):");
         if (!people.isEmpty()) {

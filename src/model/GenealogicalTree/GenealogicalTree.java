@@ -1,6 +1,5 @@
 package model.GenealogicalTree;
 
-import model.Family.FileOperations;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -98,10 +97,6 @@ public class GenealogicalTree<T extends TreeElement<T>> implements Iterable<T>, 
         }
 
         return sb.toString();
-    }
-
-    public void saveTree(FileOperations fileOperations) {
-        fileOperations.save(this);
     }
 
     @Override
