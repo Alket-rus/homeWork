@@ -9,13 +9,11 @@ public class FileHandler implements FileOperations {
         this.filePath = filePath;
     }
 
-
     @Override
     public boolean save(Serializable obj) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
             File file = new File(filePath);
-            file.getParentFile().mkdirs();
-
+            file.createNewFile();
             out.writeObject(obj);
             return true;
         } catch (IOException e) {
@@ -28,8 +26,6 @@ public class FileHandler implements FileOperations {
     public Object read() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
             return in.readObject();
-        } catch (FileNotFoundException e) {
-            return null;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -39,9 +35,5 @@ public class FileHandler implements FileOperations {
     @Override
     public void setPath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public boolean fileExists() {
-        return new File(filePath).exists();
     }
 }

@@ -99,13 +99,6 @@ public class Person implements TreeElement<Person>, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getFullName())
-                .append(" (")
-                .append(gender.name())
-                .append(" ")
-                .append(birthdate)
-                .append(")");
-        return sb.toString();
+        return String.format("%s (%s %s)", getFullName(), gender.name(), birthdate);
     }
 }

@@ -1,12 +1,16 @@
 package config;
 
 import model.Family.FamilyManager;
-import model.FamilyService;
+import model.Family.PersonCreator;
+import model.Family.PersonCreatorInterface;
+import model.Family.RelationshipManager;
+import model.Family.RelationshipManagerInterface;
 import model.GenealogicalTree.GenealogicalTree;
 import model.Human.Person;
 import model.Family.FileHandler;
 import presenter.Presenter;
 import view.ConsoleUl;
+import model.FamilyService;
 
 public class AppInitializer {
     private Presenter presenter;
@@ -14,6 +18,9 @@ public class AppInitializer {
     private FamilyManager familyManager;
     private GenealogicalTree<Person> tree;
     private FileHandler fileHandler;
+    private PersonCreatorInterface personCreator;
+    private RelationshipManagerInterface relationshipManager;
+    private FamilyService familyService;
 
     public void initialize() {
         String filePath = "src/model/GenealogicalTree/tree.txt";
@@ -24,14 +31,14 @@ public class AppInitializer {
             tree = new GenealogicalTree<>();
         }
 
-        familyManager = new FamilyManager(tree, fileHandler);
-        FamilyService familyService = new FamilyService(tree, fileHandler);
+        personCreator = new PersonCreator(tree);
+        relationshipManager = new RelationshipManager(tree);
+        familyManager = new FamilyManager(tree, fileHandler, personCreator, relationshipManager);
+
+        familyService = new FamilyService(tree, fileHandler);
 
         if (tree.getAllPeople().isEmpty()) {
-            familyManager.createPeople();
-            familyManager.establishRelationships();
-            familyManager.establishMarriages();
-            familyManager.addNewFamilies();
+            familyManager.initializeFamilyData();
         }
 
         consoleUl = new ConsoleUl(null);
@@ -40,7 +47,6 @@ public class AppInitializer {
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveState));
 
-        familyManager.printFamilyInfo();
     }
 
     private void saveState() {
