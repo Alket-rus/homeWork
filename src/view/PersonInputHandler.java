@@ -1,15 +1,16 @@
-package model.Family;
+package view;
 
-import presenter.Presenter;
+import model.Family.Gender;
 import model.Human.Person;
+import presenter.Presenter;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
 public class PersonInputHandler {
-    private Presenter presenter;
-    private Scanner scanner;
+    private final Presenter presenter;
+    private final Scanner scanner;
 
     public PersonInputHandler(Presenter presenter) {
         this.presenter = presenter;
@@ -30,14 +31,7 @@ public class PersonInputHandler {
         LocalDate birthDate = LocalDate.parse(scanner.nextLine());
 
         System.out.println("Введите пол (Мужской/Женский):");
-        String genderInput = scanner.nextLine().trim();
-
-        Gender gender;
-        try {
-            gender = parseGender(genderInput);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Неизвестный пол: " + genderInput);
-        }
+        Gender gender = parseGender(scanner.nextLine());
 
         List<Person> people = presenter.getAllPeople();
         String spouseFullName = null;

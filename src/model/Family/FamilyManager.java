@@ -1,5 +1,6 @@
 package model.Family;
 
+import model.FamilyService;
 import model.GenealogicalTree.GenealogicalTree;
 import model.Human.Person;
 
@@ -9,10 +10,16 @@ import java.util.List;
 public class FamilyManager {
     private final GenealogicalTree<Person> tree;
     private final FileOperations fileHandler;
+    private final FamilyService familyService;
 
     public FamilyManager(GenealogicalTree<Person> tree, FileOperations fileHandler) {
         this.tree = tree;
         this.fileHandler = fileHandler;
+        this.familyService = new FamilyService(tree, fileHandler);
+    }
+
+    public FamilyService getFamilyService() {
+        return familyService;
     }
 
     public void createPeople() {

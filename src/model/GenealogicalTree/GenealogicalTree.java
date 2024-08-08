@@ -65,6 +65,11 @@ public class GenealogicalTree<T extends TreeElement<T>> implements Iterable<T>, 
         return sortedList;
     }
 
+    public void updateTree(List<T> newPeople) {
+        this.people.clear();
+        this.people.addAll(newPeople);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

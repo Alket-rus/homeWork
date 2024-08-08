@@ -1,35 +1,33 @@
 package view;
 
 import presenter.Presenter;
-import model.Family.PersonInputHandler;
+
 import java.util.Scanner;
 
 public class ConsoleUl implements View {
-    private Scanner scanner;
+    private final Scanner scanner;
     private Presenter presenter;
     private boolean work;
-    private MainMenu menu;
+    private final MainMenu menu;
 
     public ConsoleUl(Presenter presenter) {
-        this.scanner = new Scanner(System.in);
         this.presenter = presenter;
+        this.scanner = new Scanner(System.in);
         this.work = true;
         this.menu = new MainMenu(this);
-    }
-
-    // Метод для установки Presenter после создания объекта ConsoleUl
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override
     public void start() {
         while (work) {
             System.out.println(menu.menu());
-            String choice = scanner.nextLine();
-            int choiceInt = Integer.parseInt(choice);
-            menu.execute(choiceInt);
+            int choice = Integer.parseInt(scanner.nextLine());
+            menu.execute(choice);
         }
+    }
+
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
     }
 
     public void finish() {
@@ -37,24 +35,40 @@ public class ConsoleUl implements View {
     }
 
     public void showTree() {
-        presenter.showTree();
+        if (presenter != null) {
+            presenter.showTree();
+        } else {
+            printAnswer("Презентатор не инициализирован.");
+        }
     }
 
     public void sortByAge() {
-        presenter.sortByAge();
+        if (presenter != null) {
+            presenter.sortByAge();
+        } else {
+            printAnswer("Презентатор не инициализирован.");
+        }
     }
 
     public void sortByName() {
-        presenter.sortByName();
+        if (presenter != null) {
+            presenter.sortByName();
+        } else {
+            printAnswer("Презентатор не инициализирован.");
+        }
     }
 
     public void addPerson() {
-        PersonInputHandler handler = new PersonInputHandler(presenter);
-        handler.handleAddPerson();
+        if (presenter != null) {
+            PersonInputHandler handler = new PersonInputHandler(presenter);
+            handler.handleAddPerson();
+        } else {
+            printAnswer("Презентатор не инициализирован.");
+        }
     }
 
     @Override
     public void printAnswer(String answer) {
-        System.out.print(answer);
+        System.out.println(answer);  // Используйте println для добавления новой строки
     }
 }

@@ -1,4 +1,4 @@
-package model.Family;
+package view;
 
 import model.GenealogicalTree.GenealogicalTree;
 import model.Human.Person;

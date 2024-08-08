@@ -9,6 +9,7 @@ public class FileHandler implements FileOperations {
         this.filePath = filePath;
     }
 
+
     @Override
     public boolean save(Serializable obj) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {

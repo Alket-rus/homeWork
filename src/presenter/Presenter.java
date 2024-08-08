@@ -1,86 +1,66 @@
 package presenter;
 
-import model.Family.FileHandler;
-import model.GenealogicalTree.GenealogicalTree;
-import model.Human.Person;
 import model.Family.Gender;
+import model.Human.Person;
+import model.FamilyService;
 import view.View;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class Presenter {
-    private View view;
-    private GenealogicalTree<Person> tree;
+    private final View view;
+    private final FamilyService service;
 
-    public Presenter(View view, GenealogicalTree<Person> tree) {
+    public Presenter(View view, FamilyService service) {
         this.view = view;
-        this.tree = tree;
-    }
-
-    public List<Person> getAllPeople() {
-        return tree.getAllPeople();
+        this.service = service;
     }
 
     public void addPerson(String firstName, String middleName, String lastName, LocalDate birthDate, Gender gender,
                           String spouseFullName, String parent1FullName, String parent2FullName) {
-        Person person = new Person(firstName, middleName, lastName, birthDate, gender);
-        tree.addPerson(person);
-
-        if (spouseFullName != null && !spouseFullName.isEmpty()) {
-            Person spouse = tree.getPerson(spouseFullName);
-            if (spouse != null) {
-                tree.addMarriage(person.getFullName(), spouse.getFullName());
-            }
-        }
-
-        if (parent1FullName != null && !parent1FullName.isEmpty()) {
-            Person parent1 = tree.getPerson(parent1FullName);
-            if (parent1 != null) {
-                tree.addRelationship(parent1.getFullName(), person.getFullName());
-            }
-        }
-
-        if (parent2FullName != null && !parent2FullName.isEmpty()) {
-            Person parent2 = tree.getPerson(parent2FullName);
-            if (parent2 != null) {
-                tree.addRelationship(parent2.getFullName(), person.getFullName());
-            }
-        }
-
-        view.printAnswer("Добавлен новый человек: " + person.getFullName());
+        service.addPerson(firstName, middleName, lastName, birthDate, gender, spouseFullName, parent1FullName, parent2FullName);
+        view.printAnswer("Добавлен новый человек: " + firstName + " " + middleName + " " + lastName + "\n");
         showTree();
     }
 
+    public List<Person> getAllPeople() {
+        return service.getAllPeople();
+    }
+
     public void sortByName() {
-        List<Person> sortedPeople = tree.getPeopleSortedByName();
+        List<Person> sortedPeople = service.getAllPeople();
+        sortedPeople.sort((p1, p2) -> p1.getFullName().compareTo(p2.getFullName()));
+
         StringBuilder sb = new StringBuilder("Отсортировано по имени:\n");
-        for (Person person : sortedPeople) {
-            sb.append(person.getFullName())
-                    .append(" (")
-                    .append(person.getGender().name())
-                    .append(" ")
-                    .append(person.getBirthDate())
-                    .append(")\n");
-        }
+        sortedPeople.forEach(person -> sb.append(person.getFullName()).append("\n"));
+
         view.printAnswer(sb.toString());
     }
 
     public void sortByAge() {
-        List<Person> sortedPeople = tree.getPeopleSortedByAge();
+        List<Person> sortedPeople = service.getAllPeople();
+        sortedPeople.sort((p1, p2) -> Integer.compare(p1.getAge(), p2.getAge()));
+
         StringBuilder sb = new StringBuilder("Отсортировано по возрасту:\n");
-        for (Person person : sortedPeople) {
-            sb.append(person.getFullName())
-                    .append(" (")
-                    .append(person.getGender().name())
-                    .append(" ")
-                    .append(person.getBirthDate())
-                    .append(")\n");
-        }
+        sortedPeople.forEach(person ->
+                sb.append(String.format("%s (Возраст: %d, Пол: %s)%n", person.getFullName(), person.getAge(), person.getGender().name()))
+        );
+
         view.printAnswer(sb.toString());
     }
 
     public void showTree() {
-        view.printAnswer(tree.toString());
+        view.printAnswer(service.loadTree().toString());
+    }
+
+    public void saveTree() {
+        service.saveTree();
+        view.printAnswer("Дерево сохранено.\n");
+    }
+
+    public void loadTree() {
+        service.loadTree();
+        view.printAnswer("Дерево загружено.\n");
     }
 }
