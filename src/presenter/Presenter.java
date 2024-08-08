@@ -53,14 +53,4 @@ public class Presenter {
     public void showTree() {
         view.printAnswer(service.loadTree().toString());
     }
-
-    public void saveTree() {
-        service.saveTree();
-        view.printAnswer("Дерево сохранено.\n");
-    }
-
-    public void loadTree() {
-        service.loadTree();
-        view.printAnswer("Дерево загружено.\n");
-    }
 }
