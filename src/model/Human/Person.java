@@ -11,7 +11,6 @@ import java.util.List;
 
 public class Person implements TreeElement<Person>, Serializable {
     private static final long serialVersionUID = 1L;
-
     private String firstName;
     private String lastName;
     private String patronymic;
@@ -99,6 +98,6 @@ public class Person implements TreeElement<Person>, Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s (%s %s)", getFullName(), gender.name(), birthdate);
+        return String.format("%s (%s, %d лет, Дата рождения: %s)", getFullName(), gender.name(), getAge(), birthdate);
     }
 }

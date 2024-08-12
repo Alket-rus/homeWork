@@ -1,7 +1,10 @@
 package view;
 
+import model.PersonManager;
 import presenter.Presenter;
+import model.Human.Person;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUl implements View {
@@ -60,7 +63,8 @@ public class ConsoleUl implements View {
 
     public void addPerson() {
         if (presenter != null) {
-            PersonInputHandler handler = new PersonInputHandler(presenter);
+            PersonManager personManager = presenter.getPersonManager();  // Предполагаем, что getPersonManager доступен
+            PersonInputHandler handler = new PersonInputHandler(personManager, new UserInputHandler());
             handler.handleAddPerson();
         } else {
             printAnswer("Презентатор не инициализирован.");
@@ -69,6 +73,20 @@ public class ConsoleUl implements View {
 
     @Override
     public void printAnswer(String answer) {
-        System.out.println(answer);  // Используйте println для добавления новой строки
+        System.out.println(answer);
+    }
+
+    @Override
+    public void displayPeople(List<Person> people) {
+        String formattedList = formatPeopleList(people);
+        printAnswer(formattedList);
+    }
+
+    private String formatPeopleList(List<Person> people) {
+        StringBuilder sb = new StringBuilder();
+        for (Person person : people) {
+            sb.append(person.toString()).append("\n");
+        }
+        return sb.toString();
     }
 }

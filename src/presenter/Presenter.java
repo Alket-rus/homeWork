@@ -1,8 +1,9 @@
 package presenter;
 
 import model.Family.Gender;
-import model.Human.Person;
 import model.FamilyService;
+import model.Human.Person;
+import model.PersonManager;
 import view.View;
 
 import java.time.LocalDate;
@@ -10,47 +11,35 @@ import java.util.List;
 
 public class Presenter {
     private final View view;
-    private final FamilyService service;
+    private final PersonManager personManager;
 
-    public Presenter(View view, FamilyService service) {
+    public Presenter(View view, FamilyService familyService) {
         this.view = view;
-        this.service = service;
+        this.personManager = familyService;
     }
 
-    public void addPerson(String firstName, String middleName, String lastName, LocalDate birthDate, Gender gender,
-                          String spouseFullName, String parent1FullName, String parent2FullName) {
-        service.addPerson(firstName, middleName, lastName, birthDate, gender, spouseFullName, parent1FullName, parent2FullName);
+    public void addPerson(String firstName, String middleName, String lastName, LocalDate birthDate,
+                          Gender gender, String spouseFullName, String parent1FullName, String parent2FullName) {
+        personManager.addPerson(firstName, middleName, lastName, birthDate, gender, spouseFullName, parent1FullName, parent2FullName);
         view.printAnswer("Добавлен новый человек: " + firstName + " " + middleName + " " + lastName + "\n");
         showTree();
     }
 
-    public List<Person> getAllPeople() {
-        return service.getAllPeople();
-    }
-
     public void sortByName() {
-        List<Person> sortedPeople = service.getAllPeople();
-        sortedPeople.sort((p1, p2) -> p1.getFullName().compareTo(p2.getFullName()));
-
-        StringBuilder sb = new StringBuilder("Отсортировано по имени:\n");
-        sortedPeople.forEach(person -> sb.append(person.getFullName()).append("\n"));
-
-        view.printAnswer(sb.toString());
+        List<Person> sortedPeople = personManager.sortByName();
+        view.displayPeople(sortedPeople);
     }
 
     public void sortByAge() {
-        List<Person> sortedPeople = service.getAllPeople();
-        sortedPeople.sort((p1, p2) -> Integer.compare(p1.getAge(), p2.getAge()));
-
-        StringBuilder sb = new StringBuilder("Отсортировано по возрасту:\n");
-        sortedPeople.forEach(person ->
-                sb.append(String.format("%s (Возраст: %d, Пол: %s)%n", person.getFullName(), person.getAge(), person.getGender().name()))
-        );
-
-        view.printAnswer(sb.toString());
+        List<Person> sortedPeople = personManager.sortByAge();
+        view.displayPeople(sortedPeople);
     }
 
     public void showTree() {
-        view.printAnswer(service.loadTree().toString());
+        view.printAnswer(((FamilyService) personManager).loadTree().toString());
+    }
+
+    public PersonManager getPersonManager() {
+        return personManager;
     }
 }

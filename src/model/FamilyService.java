@@ -7,8 +7,9 @@ import model.Family.Gender;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class FamilyService {
+public class FamilyService implements PersonManager {
     private final GenealogicalTree<Person> tree;
     private final FileOperations fileHandler;
 
@@ -17,6 +18,7 @@ public class FamilyService {
         this.fileHandler = fileHandler;
     }
 
+    @Override
     public void addPerson(String firstName, String middleName, String lastName, LocalDate birthDate, Gender gender,
                           String spouseFullName, String parent1FullName, String parent2FullName) {
         Person person = new Person(firstName, middleName, lastName, birthDate, gender);
@@ -44,8 +46,25 @@ public class FamilyService {
         }
     }
 
+    @Override
     public List<Person> getAllPeople() {
         return tree.getAllPeople();
+    }
+
+    @Override
+    public List<Person> sortByName() {
+        return tree.getAllPeople()
+                .stream()
+                .sorted((p1, p2) -> p1.getLastName().compareToIgnoreCase(p2.getLastName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Person> sortByAge() {
+        return tree.getAllPeople()
+                .stream()
+                .sorted((p1, p2) -> p2.getBirthDate().compareTo(p1.getBirthDate()))  // Сортировка по возрасту (старший - первый)
+                .collect(Collectors.toList());
     }
 
     public void saveTree() {
