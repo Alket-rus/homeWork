@@ -37,7 +37,6 @@ public class ConsoleUl implements View {
 
     public void showTree() {
         if (presenter != null) {
-            printAnswer("Генеалогическое дерево:");
             presenter.showTree();
         } else {
             printAnswer("Презентатор не инициализирован.");
