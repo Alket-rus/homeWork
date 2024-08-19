@@ -45,6 +45,7 @@ public class ConsoleUl implements View {
 
     public void sortByAge() {
         if (presenter != null) {
+            printAnswer("Люди, отсортированные по возрасту:");
             presenter.sortByAge();
         } else {
             printAnswer("Презентатор не инициализирован.");
@@ -53,6 +54,7 @@ public class ConsoleUl implements View {
 
     public void sortByName() {
         if (presenter != null) {
+            printAnswer("Люди, отсортированные по имени:");
             presenter.sortByName();
         } else {
             printAnswer("Презентатор не инициализирован.");
