@@ -11,6 +11,8 @@ public class MainMenu {
     public MainMenu(ConsoleUl consoleUl) {
         commands = new ArrayList<>();
         commands.add(new AddPerson(consoleUl));
+        commands.add(new SaveTree(consoleUl));
+        commands.add(new LoadTree(consoleUl));
         commands.add(new SortByName(consoleUl));
         commands.add(new SortByAge(consoleUl));
         commands.add(new ShowTree(consoleUl));

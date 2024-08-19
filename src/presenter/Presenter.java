@@ -3,6 +3,7 @@ package presenter;
 import model.Family.Gender;
 import model.FamilyService;
 import model.Human.Person;
+import model.PersonFormatter;
 import model.PersonManager;
 import view.View;
 
@@ -12,10 +13,12 @@ import java.util.List;
 public class Presenter {
     private final View view;
     private final PersonManager personManager;
+    private final PersonFormatter personFormatter;
 
     public Presenter(View view, FamilyService familyService) {
         this.view = view;
         this.personManager = familyService;
+        this.personFormatter = new PersonFormatter();
     }
 
     public void addPerson(String firstName, String middleName, String lastName, LocalDate birthDate,
@@ -27,16 +30,31 @@ public class Presenter {
 
     public void sortByName() {
         List<Person> sortedPeople = personManager.sortByName();
-        view.displayPeople(sortedPeople);
+        String formattedPeople = personFormatter.formatPeopleList(sortedPeople);
+        view.displayPeople(formattedPeople);
     }
 
     public void sortByAge() {
         List<Person> sortedPeople = personManager.sortByAge();
-        view.displayPeople(sortedPeople);
+        String formattedPeople = personFormatter.formatPeopleList(sortedPeople);
+        view.displayPeople(formattedPeople);
     }
 
     public void showTree() {
         view.printAnswer(((FamilyService) personManager).loadTree().toString());
+    }
+
+    public void saveTree() {
+        if (personManager instanceof FamilyService) {
+            ((FamilyService) personManager).saveTree();
+        }
+    }
+
+    public void loadTree() {
+        if (personManager instanceof FamilyService) {
+            ((FamilyService) personManager).loadTree();
+            showTree();
+        }
     }
 
     public PersonManager getPersonManager() {

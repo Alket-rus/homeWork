@@ -6,5 +6,5 @@ import java.util.List;
 public interface View {
     void start();
     void printAnswer(String answer);
-    void displayPeople(List<Person> people);
+    void displayPeople(String peopleInfo);
 }

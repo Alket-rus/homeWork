@@ -2,9 +2,7 @@ package view;
 
 import model.PersonManager;
 import presenter.Presenter;
-import model.Human.Person;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUl implements View {
@@ -63,11 +61,29 @@ public class ConsoleUl implements View {
 
     public void addPerson() {
         if (presenter != null) {
-            PersonManager personManager = presenter.getPersonManager();  // Предполагаем, что getPersonManager доступен
+            PersonManager personManager = presenter.getPersonManager();
             PersonInputHandler handler = new PersonInputHandler(personManager, new UserInputHandler());
             handler.handleAddPerson();
         } else {
             printAnswer("Презентатор не инициализирован.");
+        }
+    }
+
+    public void saveTree() {
+        if (presenter != null) {
+            printAnswer("Генеалогическое дерево сохранено.");
+            presenter.saveTree();
+        } else {
+            printAnswer("Ошибка: Сервис семейного дерева не найден.");
+        }
+    }
+
+    public void loadTree() {
+        if (presenter != null) {
+            printAnswer("Генеалогическое дерево загружено.");
+            presenter.loadTree();
+        } else {
+            printAnswer("Ошибка: Сервис семейного дерева не найден.");
         }
     }
 
@@ -77,16 +93,7 @@ public class ConsoleUl implements View {
     }
 
     @Override
-    public void displayPeople(List<Person> people) {
-        String formattedList = formatPeopleList(people);
-        printAnswer(formattedList);
-    }
-
-    private String formatPeopleList(List<Person> people) {
-        StringBuilder sb = new StringBuilder();
-        for (Person person : people) {
-            sb.append(person.toString()).append("\n");
-        }
-        return sb.toString();
+    public void displayPeople(String peopleInfo) {
+        printAnswer(peopleInfo);
     }
 }
