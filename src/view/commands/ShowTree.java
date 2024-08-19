@@ -5,7 +5,7 @@ import view.ConsoleUl;
 public class ShowTree extends Command {
 
     public ShowTree(ConsoleUl consoleUl) {
-        super("Генеалогическое дерево:", consoleUl);
+        super("Показать генеалогическое дерево", consoleUl);
     }
 
     @Override
